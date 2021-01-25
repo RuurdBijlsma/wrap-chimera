@@ -18,10 +18,7 @@ class VlcPlaylist {
      * @returns {VlcMedia[]}
      */
     get items() {
-        let items = [];
-        for (let i = 0; i < this._playlist.items.count; i++)
-            items.push(new VlcMedia(this._playlist.items[i]))
-        return items;
+        return this._playlist.items.map(m => new VlcMedia(m));
     }
 
     /**

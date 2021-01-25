@@ -18,14 +18,11 @@ class VlcVideo {
     }
 
     /**
-     * List video track names
+     * List audio track names
      * @returns {string[]}
      */
     get tracks() {
-        let tracks = [];
-        for (let i = 0; i < this._video.count; i++)
-            tracks.push(this._video[i] === undefined ? i === 0 ? 'Disabled' : `Track ${i}` : this._video[i])
-        return tracks;
+        return this._video.tracks;
     }
 
     /**

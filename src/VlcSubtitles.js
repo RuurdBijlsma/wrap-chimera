@@ -12,13 +12,10 @@ class VlcSubtitles {
 
     /**
      * Get subtitle track names
-     * @returns {String[]}
+     * @returns {string[]}
      */
     get tracks() {
-        let tracks = [];
-        for (let i = 0; i < this._subtitles.count; i++)
-            tracks.push(this._subtitles[i] === undefined ? i === 0 ? 'Disabled' : `Track ${i}` : this._subtitles[i])
-        return tracks;
+        return this._subtitles.tracks;
     }
 
     /**

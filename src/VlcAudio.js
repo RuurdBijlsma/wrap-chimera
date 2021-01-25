@@ -17,10 +17,7 @@ class VlcAudio {
      * @returns {string[]}
      */
     get tracks() {
-        let tracks = [];
-        for (let i = 0; i < this._audio.count; i++)
-            tracks.push(this._audio[i] === undefined ? i === 0 ? 'Disabled' : `Track ${i}` : this._audio[i])
-        return tracks;
+        return this._audio.tracks;
     }
 
     /**
