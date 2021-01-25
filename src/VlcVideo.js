@@ -18,10 +18,14 @@ class VlcVideo {
     }
 
     /**
-     * @returns {int}
+     * List video track names
+     * @returns {string[]}
      */
-    get count() {
-        return this._video.count;
+    get tracks() {
+        let tracks = [];
+        for (let i = 0; i < this._video.count; i++)
+            tracks.push(this._video[i] ?? i === 0 ? 'Disabled' : `Track ${i}`)
+        return tracks;
     }
 
     /**

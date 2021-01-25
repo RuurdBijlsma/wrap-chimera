@@ -19,7 +19,7 @@ class VlcAudio {
     get tracks() {
         let tracks = [];
         for (let i = 0; i < this._audio.count; i++)
-            tracks.push(this._audio[i])
+            tracks.push(this._audio[i] ?? i === 0 ? 'Disabled' : `Track ${i}`)
         return tracks;
     }
 
