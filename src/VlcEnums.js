@@ -25,7 +25,7 @@ const Channel = [
 ]
 
 const DeinterlaceMode = [
-    'blend', 'bob', 'discard', 'linear', 'mean', 'x', 'yadif', 'yadif2x'
+    'off', 'blend', 'bob', 'discard', 'linear', 'mean', 'x', 'yadif', 'yadif2x'
 ]
 
 const PlaylistMode = ['Normal', 'Loop', 'Single'];
