@@ -18,7 +18,7 @@ class VlcPlaylist {
      * @returns {VlcMedia[]}
      */
     get items() {
-        return this._playlist.items.map(m => new VlcMedia(m));
+        return this._playlist.items.items.map(m => new VlcMedia(m));
     }
 
     /**
