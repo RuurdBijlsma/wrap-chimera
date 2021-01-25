@@ -17,7 +17,7 @@ class VlcSubtitles {
     get tracks() {
         let tracks = [];
         for (let i = 0; i < this._subtitles.count; i++)
-            tracks.push(this._subtitles[i])
+            tracks.push(this._subtitles[i] === undefined ? i === 0 ? 'Disabled' : `Track ${i}` : this._subtitles[i])
         return tracks;
     }
 
