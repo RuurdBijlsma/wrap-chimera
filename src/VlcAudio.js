@@ -19,7 +19,7 @@ class VlcAudio {
     get tracks() {
         let tracks = [];
         for (let i = 0; i < this._audio.count; i++)
-            tracks.push(this._audio[i] ?? i === 0 ? 'Disabled' : `Track ${i}`)
+            tracks.push(this._audio[i] === undefined ? i === 0 ? 'Disabled' : `Track ${i}` : this._audio[i])
         return tracks;
     }
 
@@ -84,7 +84,7 @@ class VlcAudio {
      * @param {("Error"|"Stereo"|"ReverseStereo"|"Left"|"Right"|"Dolby")} channel Channel
      */
     set channel(channel) {
-        if(!Channel.includes(channel))
+        if (!Channel.includes(channel))
             throw new Error("Channel should be one of " + Channel.toString())
         this._audio.channel = Channel.indexOf(channel);
     }
