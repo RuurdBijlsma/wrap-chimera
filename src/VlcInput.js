@@ -10,6 +10,24 @@ const {StateValues} = require('./VlcEnums')
 class VlcInput {
     constructor(input) {
         this._input = input;
+        /**
+         * Pixel width of video
+         * @type {int}
+         */
+        this.width = 0;
+        /**
+         * Pixel height of video
+         * @type {int}
+         */
+        this.height = 0;
+        /**
+         * @type {int}
+         */
+        this.uOffset = 0;
+        /**
+         * @type {int}
+         */
+        this.vOffset = 0;
     }
 
     /**

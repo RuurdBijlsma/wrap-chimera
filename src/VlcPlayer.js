@@ -11,8 +11,6 @@ const VlcVideo = require('./VlcVideo')
 const renderer = require('wcjs-renderer')
 const {PlayerPixelFormat, StateValues} = require('./VlcEnums')
 
-console.log(renderer)
-
 
 /**
  * VLC Player
@@ -72,16 +70,25 @@ class VlcPlayer extends EventEmitter {
         /**
          * Frame is set up
          * @event VlcPlayer#frameSetup
+         * @param {int} uOffset
+         * @param {int} vOffset
          * @param {int} width
          * @param {int} height
          * @param {('RV32'|'I420')} pixelFormat
          * @param {Uint8Array} videoFrame
          */
-        player.onFrameSetup = (width, height, pixelFormat, videoFrame) => this.emit('frameSetup', width, height, pixelFormat, videoFrame);
+        player.onFrameSetup =
+            (width, height, uOffset, vOffset, pixelFormat, videoFrame) => {
+                this.input.width = width;
+                this.input.height = height;
+                this.input.uOffset = uOffset;
+                this.input.vOffset = vOffset;
+                this.emit('frameSetup', width, height, pixelFormat, videoFrame);
+            }
         /**
          * Frame is ready
          * @event VlcPlayer#frameReady
-         * @param {*} videoFrame
+         * @param {Uint8Array} videoFrame
          */
         player.onFrameReady = (videoFrame) => this.emit('frameReady', videoFrame);
         /**
@@ -202,7 +209,7 @@ class VlcPlayer extends EventEmitter {
      * @param {function} options.onFrameCleanup Will be called when VLC's onFrameCleanup callback is called, with the same arguments, after the frame was cleaned up.
      */
     bindCanvas(canvas, options = {}) {
-        this._renderer.bind(canvas, this._player, options);
+        this._renderer.bind(canvas, this, options);
     }
 
     /**
