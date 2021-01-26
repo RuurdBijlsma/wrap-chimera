@@ -222,7 +222,7 @@ class VlcPlayer extends EventEmitter {
     }
 
     /**
-     * @param {Object} renderer Custom renderer using the same API as https://www.npmjs.com/package/wcjs-renderer
+     * @param {Object} renderer Custom renderer using the same API as https
      */
     setRenderer(renderer) {
         if (this._boundCanvas)
@@ -256,7 +256,7 @@ class VlcPlayer extends EventEmitter {
     }
 
     /**
-     * The number of frames that were rendered in 1 seconds after the request was made (useful for performance tests and getting the current fps of a live stream as it normally returns as 0 with the WebChimera.js native method, to note: even when playback is paused it still renders at 10 fps).
+     * The number of frames that were rendered in 1 seconds after the request was made (useful for performance tests and getting the current fps of a live stream as it normally returns as 0 with the WebChimera.js native method, to note
      * @returns {Promise<number>}
      */
     getFps() {
@@ -452,6 +452,12 @@ class VlcPlayer extends EventEmitter {
     }
 
     destroy() {
+        ['onFrameSetup', 'onFrameReady', 'onFrameCleanup', 'onMediaChanged',
+            'onNothingSpecial', 'onOpening', 'onBuffering', 'onPlaying', 'onPaused',
+            'onForward', 'onBackward', 'onEncounteredError', 'onEndReached', 'onStopped',
+            'onTimeChanged', 'onPositionChanged', 'onSeekableChanged', 'onPausableChanged', 'onLengthChanged',
+            'onLogMessage'].forEach(e => this._player[e] = () => 0);
+
         this.clearCanvas();
         this.close();
         this._boundCanvas = null;
