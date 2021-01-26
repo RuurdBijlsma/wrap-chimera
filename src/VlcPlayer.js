@@ -336,7 +336,7 @@ class VlcPlayer extends EventEmitter {
      * @param {number} volume
      */
     set volume(volume) {
-        this._player.volume = volume;
+        this._player.volume = Math.min(volume, 200);
     }
 
     /**

@@ -65,7 +65,7 @@ class VlcAudio {
      * @param {number} volume
      */
     set volume(volume) {
-        this._audio.volume = volume;
+        this._audio.volume = Math.min(volume, 200);
     }
 
     /**
