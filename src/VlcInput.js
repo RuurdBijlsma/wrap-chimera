@@ -102,7 +102,7 @@ class VlcInput extends EventEmitter {
      * @returns {number}
      */
     get rate() {
-        return this._input.position;
+        return this._input.rate;
     }
 
     /**
