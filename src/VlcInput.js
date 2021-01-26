@@ -1,14 +1,16 @@
 /**
  * @module WrapChimera
  */
-
+const EventEmitter = require('events');
 const {StateValues} = require('./VlcEnums')
 
 /**
  * VLC Input file
+ * @fires VlcInput#rateChange
  */
-class VlcInput {
+class VlcInput extends EventEmitter {
     constructor(input) {
+        super();
         this._input = input;
         /**
          * Pixel width of video
@@ -88,6 +90,7 @@ class VlcInput {
 
     /**
      * The absolute position in time given in milliseconds, this property can be used to seek through the stream.
+     * Will not fire seek event
      * @param {number} milliseconds
      */
     set time(milliseconds) {
@@ -108,6 +111,11 @@ class VlcInput {
      */
     set rate(rate) {
         this._input.rate = rate;
+        /**
+         * Rate change
+         * @event VlcInput#rateChange
+         */
+        this.emit('rateChange', rate);
     }
 }
 
