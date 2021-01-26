@@ -23,7 +23,10 @@ class VlcVideo {
      * @returns {int}
      */
     get width() {
-        return this.tracks[this.track].width;
+        let track = this.track;
+        if (track === -1)
+            return 0;
+        return this.tracks[track].width;
     }
 
     /**
@@ -31,7 +34,10 @@ class VlcVideo {
      * @returns {int}
      */
     get height() {
-        return this.tracks[this.track].height;
+        let track = this.track;
+        if (track === -1)
+            return 0;
+        return this.tracks[track].height;
     }
 
     /**

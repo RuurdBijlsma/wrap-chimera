@@ -11,7 +11,6 @@ const VlcVideo = require('./VlcVideo')
 const renderer = require('wcjs-renderer')
 const {PlayerPixelFormat, StateValues} = require('./VlcEnums')
 
-
 /**
  * VLC Player
  * @fires VlcPlayer#stateChange
@@ -23,6 +22,7 @@ const {PlayerPixelFormat, StateValues} = require('./VlcEnums')
  * @fires VlcPlayer#frameReady
  * @fires VlcPlayer#frameCleanup
  * @fires VlcPlayer#mediaChange
+ * @fires VlcPlayer#load
  * @fires VlcPlayer#idle
  * @fires VlcPlayer#opening
  * @fires VlcPlayer#buffering
@@ -43,6 +43,7 @@ const {PlayerPixelFormat, StateValues} = require('./VlcEnums')
 class VlcPlayer extends EventEmitter {
     constructor(player) {
         super();
+        this._loadInterval = null;
         this._player = player;
         /**
          * VLC Input file
@@ -102,12 +103,22 @@ class VlcPlayer extends EventEmitter {
          * @event VlcPlayer#frameCleanup
          */
         player.onFrameCleanup = () => this.emit('frameCleanup');
-        /**
-         * Media changed
-         * @event VlcPlayer#mediaChange
-         */
         player.onMediaChanged = () => {
+            this._loadInterval = setInterval(() => {
+                if (this.video.track !== -1) {
+                    clearInterval(this._loadInterval);
+                    /**
+                     * Video loaded
+                     * @event VlcPlayer#load
+                     */
+                    this.emit('load');
+                }
+            }, 1);
             this.clearCanvas();
+            /**
+             * Media changed
+             * @event VlcPlayer#mediaChange
+             */
             this.emit('mediaChange');
         }
         /**
@@ -451,15 +462,20 @@ class VlcPlayer extends EventEmitter {
         this._player.close();
     }
 
+    /**
+     * Cleanly destroy player
+     */
     destroy() {
+        this.stop();
+
         ['onFrameSetup', 'onFrameReady', 'onFrameCleanup', 'onMediaChanged',
             'onNothingSpecial', 'onOpening', 'onBuffering', 'onPlaying', 'onPaused',
             'onForward', 'onBackward', 'onEncounteredError', 'onEndReached', 'onStopped',
             'onTimeChanged', 'onPositionChanged', 'onSeekableChanged', 'onPausableChanged', 'onLengthChanged',
             'onLogMessage'].forEach(e => this._player[e] = () => 0);
 
+        clearInterval(this._loadInterval);
         this.clearCanvas();
-        this.stop();
         this.close();
         this._boundCanvas = null;
         this.removeAllListeners();
