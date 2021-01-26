@@ -459,6 +459,7 @@ class VlcPlayer extends EventEmitter {
             'onLogMessage'].forEach(e => this._player[e] = () => 0);
 
         this.clearCanvas();
+        this.stop();
         this.close();
         this._boundCanvas = null;
         this.removeAllListeners();
