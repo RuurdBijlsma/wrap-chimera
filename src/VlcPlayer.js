@@ -416,6 +416,7 @@ class VlcPlayer extends EventEmitter {
         this.close();
         this._boundCanvas = null;
         this.removeAllListeners();
+        this._renderer.destroy();
     }
 }
 
