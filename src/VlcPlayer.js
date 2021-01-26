@@ -212,7 +212,7 @@ class VlcPlayer extends EventEmitter {
          */
         const stateChangeEvent = newState => () => this.emit('stateChange', newState);
         this.on('pause', stateChangeEvent('pause'))
-        this.on('play', stateChangeEvent('pause'))
+        this.on('play', stateChangeEvent('play'))
         this.on('stop', stateChangeEvent('stop'))
         this.on('idle', stateChangeEvent('idle'))
         this.on('opening', stateChangeEvent('opening'))
