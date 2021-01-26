@@ -13,12 +13,12 @@ class VlcInput extends EventEmitter {
         super();
         this._input = input;
         /**
-         * Pixel width of video
+         * Pixel width of video buffer
          * @type {int}
          */
         this.width = 0;
         /**
-         * Pixel height of video
+         * Pixel height of video buffer
          * @type {int}
          */
         this.height = 0;

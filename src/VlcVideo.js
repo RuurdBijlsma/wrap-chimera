@@ -19,10 +19,14 @@ class VlcVideo {
 
     /**
      * List audio track names
-     * @returns {string[]}
+     * @returns {{name: string, width: int, height: int}[]}
      */
     get tracks() {
-        return this._video.tracks;
+        return this._video.tracks.map((name, i) => ({
+            name: name.toString(),
+            width: this._video.width[i],
+            height: this._video.height[i],
+        }));
     }
 
     /**
