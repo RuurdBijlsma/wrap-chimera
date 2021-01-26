@@ -366,6 +366,8 @@ class VlcPlayer extends EventEmitter {
      */
     set volume(volume) {
         let newValue = Math.max(0, Math.min(volume, 200));
+        if (newValue > this.volume && this.mute)
+            this.mute = false;
         this._player.volume = newValue;
         /**
          * Change volume
@@ -426,7 +428,7 @@ class VlcPlayer extends EventEmitter {
     }
 
     toggleMute() {
-        this._player.toggleMute();
+        this.mute = !this.mute;
     }
 
     close() {

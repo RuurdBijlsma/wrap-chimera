@@ -65,7 +65,10 @@ class VlcAudio {
      * @param {number} volume
      */
     set volume(volume) {
-        this._audio.volume = Math.max(0, Math.min(volume, 200));
+        let newValue = Math.max(0, Math.min(volume, 200));
+        if (newValue > this.volume && this.mute)
+            this.mute = false;
+        this._audio.volume = newValue;
     }
 
     /**
@@ -107,7 +110,7 @@ class VlcAudio {
      * @returns {void}
      */
     toggleMute() {
-        this._audio.toggleMute();
+        this.mute = !this.mute;
     }
 }
 

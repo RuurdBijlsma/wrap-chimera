@@ -77,7 +77,7 @@ class VlcInput extends EventEmitter {
      * @param {number} position
      */
     set position(position) {
-        this._input.position = position;
+        this._input.position = Math.max(0, Math.min(position, 1));
     }
 
     /**
@@ -94,7 +94,7 @@ class VlcInput extends EventEmitter {
      * @param {number} milliseconds
      */
     set time(milliseconds) {
-        this._input.time = milliseconds;
+        this._input.time = Math.max(0, Math.min(milliseconds, this.duration));
     }
 
     /**
