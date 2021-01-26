@@ -17,6 +17,23 @@ class VlcVideo {
         this.deinterlace = new VlcDeinterlace(this._video.deinterlace);
     }
 
+
+    /**
+     * Get width of currently playing video track
+     * @returns {int}
+     */
+    get width() {
+        return this.tracks[this.track].width;
+    }
+
+    /**
+     * Get height of currently playing video track
+     * @returns {int}
+     */
+    get height() {
+        return this.tracks[this.track].height;
+    }
+
     /**
      * List audio track names
      * @returns {{name: string, width: int, height: int}[]}
