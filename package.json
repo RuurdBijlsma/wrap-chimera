@@ -1,6 +1,6 @@
 {
   "name": "wrap-chimera",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Wraps WebChimera.js and wcjs-renderer.",
   "main": "src/index.js",
   "scripts": {},

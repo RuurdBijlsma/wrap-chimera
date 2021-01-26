@@ -67,6 +67,7 @@ class VlcPlayer extends EventEmitter {
         this.playlist = new VlcPlaylist(player.playlist);
 
         this._renderer = renderer;
+        this._boundCanvas = null;
 
         /**
          * Frame is set up
@@ -101,7 +102,10 @@ class VlcPlayer extends EventEmitter {
          * Media changed
          * @event VlcPlayer#mediaChange
          */
-        player.onMediaChanged = () => this.emit('mediaChange');
+        player.onMediaChanged = () => {
+            this.clearCanvas();
+            this.emit('mediaChange');
+        }
         /**
          * VLC is in idle state doing nothing but waiting for a command to be issued.
          * @event VlcPlayer#idle
@@ -146,12 +150,18 @@ class VlcPlayer extends EventEmitter {
          * VLC has reached the end of current playlist.
          * @event VlcPlayer#ended
          */
-        player.onEndReached = () => this.emit('ended');
+        player.onEndReached = () => {
+            this.clearCanvas();
+            this.emit('ended');
+        }
         /**
          * Player stopped
          * @event VlcPlayer#stop
          */
-        player.onStopped = () => this.emit('stop');
+        player.onStopped = () => {
+            this.clearCanvas();
+            this.emit('stop');
+        }
         /**
          * Time changed
          * @event VlcPlayer#timeChange
@@ -196,6 +206,8 @@ class VlcPlayer extends EventEmitter {
      * @param {Object} renderer Custom renderer using the same API as https://www.npmjs.com/package/wcjs-renderer
      */
     setRenderer(renderer) {
+        if (this._boundCanvas)
+            console.warn("The canvas needs to be bound again when setting a custom renderer")
         this._renderer = renderer;
     }
 
@@ -210,6 +222,7 @@ class VlcPlayer extends EventEmitter {
      * @param {function} options.onFrameCleanup Will be called when VLC's onFrameCleanup callback is called, with the same arguments, after the frame was cleaned up.
      */
     bindCanvas(canvas, options = {}) {
+        this._boundCanvas = canvas;
         this._renderer.bind(canvas, this, options);
     }
 
@@ -217,7 +230,9 @@ class VlcPlayer extends EventEmitter {
      * Draws a single black frame on a canvas element (it's recommended to clear the canvas when the Media Changed and Ended events are triggered).
      * @param {Element} canvas
      */
-    clearCanvas(canvas) {
+    clearCanvas(canvas = this._boundCanvas) {
+        if (!canvas)
+            return;
         this._renderer.clear(canvas);
     }
 
