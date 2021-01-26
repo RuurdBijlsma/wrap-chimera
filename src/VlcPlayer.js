@@ -14,6 +14,7 @@ const {PlayerPixelFormat, StateValues} = require('./VlcEnums')
 
 /**
  * VLC Player
+ * @fires VlcPlayer#seek
  * @fires VlcPlayer#frameSetup
  * @fires VlcPlayer#frameReady
  * @fires VlcPlayer#frameCleanup
@@ -304,6 +305,11 @@ class VlcPlayer extends EventEmitter {
      * @param {number} position
      */
     set position(position) {
+        /**
+         * Seek
+         * @event VlcPlayer#seek
+         */
+        this.emit('seek');
         this._player.position = position;
     }
 
@@ -320,6 +326,11 @@ class VlcPlayer extends EventEmitter {
      * @param {int} milliseconds
      */
     set time(milliseconds) {
+        /**
+         * Seek
+         * @event VlcPlayer#seek
+         */
+        this.emit('seek');
         this._player.time = milliseconds;
     }
 
