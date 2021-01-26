@@ -50,7 +50,7 @@ class VlcInput extends EventEmitter {
 
     /**
      * Returns current state
-     * @returns {("NothingSpecial"|"Opening"|"Buffering"|"Playing"|"Paused"|"Stopped"|"Ended"|"Error")}
+     * @returns {("Idle"|"Opening"|"Buffering"|"Playing"|"Paused"|"Stopped"|"Ended"|"Error")}
      */
     get state() {
         return StateValues[this._input.state];

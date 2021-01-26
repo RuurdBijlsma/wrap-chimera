@@ -14,6 +14,7 @@ const {PlayerPixelFormat, StateValues} = require('./VlcEnums')
 
 /**
  * VLC Player
+ * @fires VlcPlayer#stateChange
  * @fires VlcPlayer#seek
  * @fires VlcPlayer#volumeChange
  * @fires VlcPlayer#unmute
@@ -113,7 +114,7 @@ class VlcPlayer extends EventEmitter {
          * VLC is in idle state doing nothing but waiting for a command to be issued.
          * @event VlcPlayer#idle
          */
-        player.onNothingSpecial = () => this.emit('idle');
+        player.onNothingSpecial = () => this.emit('idle')
         /**
          * VLC is opening an media resource locator (MRL).
          * @event VlcPlayer#opening
@@ -203,6 +204,21 @@ class VlcPlayer extends EventEmitter {
          * @param {string} format Format of log message
          */
         player.onLogMessage = (level, message, format) => this.emit('message', level, message, format);
+
+        /**
+         * State changed
+         * @event VlcPlayer#stateChange
+         * @param newState
+         */
+        const stateChangeEvent = newState => () => this.emit('stateChange', newState);
+        this.on('pause', stateChangeEvent('pause'))
+        this.on('play', stateChangeEvent('pause'))
+        this.on('stop', stateChangeEvent('stop'))
+        this.on('idle', stateChangeEvent('idle'))
+        this.on('opening', stateChangeEvent('opening'))
+        this.on('buffering', stateChangeEvent('buffering'))
+        this.on('ended', stateChangeEvent('ended'))
+        this.on('error', stateChangeEvent('error'))
     }
 
     /**
@@ -280,7 +296,7 @@ class VlcPlayer extends EventEmitter {
 
     /**
      * Returns current state
-     * @returns {("NothingSpecial"|"Opening"|"Buffering"|"Playing"|"Paused"|"Stopped"|"Ended"|"Error")}
+     * @returns {("Idle"|"Opening"|"Buffering"|"Playing"|"Paused"|"Stopped"|"Ended"|"Error")}
      */
     get state() {
         return StateValues[this._player.state];

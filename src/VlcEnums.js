@@ -3,7 +3,7 @@
  */
 
 const StateValues = [
-    "NothingSpecial",
+    "Idle",
     "Opening",
     "Buffering",
     "Playing",
