@@ -323,7 +323,7 @@ class VlcPlayer extends EventEmitter {
      * @param {number} position
      */
     set position(position) {
-        this._player.position = position;
+        this._player.position = Math.max(0, Math.min(position, 1));
         /**
          * Seek
          * @event VlcPlayer#seek
@@ -344,7 +344,7 @@ class VlcPlayer extends EventEmitter {
      * @param {int} milliseconds
      */
     set time(milliseconds) {
-        this._player.time = milliseconds;
+        this._player.time = Math.max(0, Math.min(milliseconds, this.duration));
         /**
          * Seek
          * @event VlcPlayer#seek
