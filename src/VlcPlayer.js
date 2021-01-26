@@ -15,6 +15,9 @@ const {PlayerPixelFormat, StateValues} = require('./VlcEnums')
 /**
  * VLC Player
  * @fires VlcPlayer#seek
+ * @fires VlcPlayer#volumeChange
+ * @fires VlcPlayer#unmute
+ * @fires VlcPlayer#mute
  * @fires VlcPlayer#frameSetup
  * @fires VlcPlayer#frameReady
  * @fires VlcPlayer#frameCleanup
@@ -320,12 +323,12 @@ class VlcPlayer extends EventEmitter {
      * @param {number} position
      */
     set position(position) {
+        this._player.position = position;
         /**
          * Seek
          * @event VlcPlayer#seek
          */
         this.emit('seek');
-        this._player.position = position;
     }
 
     /**
@@ -341,12 +344,12 @@ class VlcPlayer extends EventEmitter {
      * @param {int} milliseconds
      */
     set time(milliseconds) {
+        this._player.time = milliseconds;
         /**
          * Seek
          * @event VlcPlayer#seek
          */
         this.emit('seek');
-        this._player.time = milliseconds;
     }
 
     /**
@@ -362,7 +365,13 @@ class VlcPlayer extends EventEmitter {
      * @param {number} volume
      */
     set volume(volume) {
-        this._player.volume = Math.min(volume, 200);
+        let newValue = Math.min(volume, 200);
+        this._player.volume = newValue;
+        /**
+         * Change volume
+         * @event VlcPlayer#volumeChange
+         */
+        this.emit('volumeChange', newValue)
     }
 
     /**
@@ -377,6 +386,19 @@ class VlcPlayer extends EventEmitter {
      */
     set mute(mute) {
         this._player.mute = mute;
+        if (mute) {
+            /**
+             * Mute
+             * @event VlcPlayer#mute
+             */
+            this.emit('mute')
+        } else {
+            /**
+             * Unmute
+             * @event VlcPlayer#unmute
+             */
+            this.emit('unmute')
+        }
     }
 
     /**
