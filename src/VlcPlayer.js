@@ -365,6 +365,7 @@ class VlcPlayer extends EventEmitter {
          * @event VlcPlayer#seek
          */
         this.emit('seek');
+        this.emit('time');
     }
 
     /**
@@ -386,6 +387,7 @@ class VlcPlayer extends EventEmitter {
          * @event VlcPlayer#seek
          */
         this.emit('seek');
+        this.emit('time');
     }
 
     /**
