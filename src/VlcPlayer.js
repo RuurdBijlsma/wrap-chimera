@@ -13,6 +13,7 @@ const {PlayerPixelFormat, StateValues} = require('./VlcEnums')
 
 /**
  * VLC Player
+ * @fires VlcPlayer#time
  * @fires VlcPlayer#stateChange
  * @fires VlcPlayer#seek
  * @fires VlcPlayer#volumeChange
@@ -230,6 +231,14 @@ class VlcPlayer extends EventEmitter {
         this.on('buffering', stateChangeEvent('buffering'))
         this.on('ended', stateChangeEvent('ended'))
         this.on('error', stateChangeEvent('error'))
+
+        /**
+         * Time or position changed
+         * @event VlcPlayer#time
+         */
+        const timeEvent = () => this.emit('time');
+        this.on('timeChange', timeEvent);
+        this.on('positionChange', timeEvent);
     }
 
     /**
