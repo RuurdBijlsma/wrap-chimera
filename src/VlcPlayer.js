@@ -44,6 +44,9 @@ const {PlayerPixelFormat, StateValues} = require('./VlcEnums')
 class VlcPlayer extends EventEmitter {
     constructor(player) {
         super();
+        let currentState = '';
+        let playing = false;
+
         this._loadInterval = null;
         this._player = player;
         /**
@@ -98,7 +101,12 @@ class VlcPlayer extends EventEmitter {
          * @event VlcPlayer#frameReady
          * @param {Uint8Array} videoFrame
          */
-        player.onFrameReady = (videoFrame) => this.emit('frameReady', videoFrame);
+        player.onFrameReady = (videoFrame) => {
+            this.emit('frameReady', videoFrame);
+            if (currentState === 'buffering') {
+                this.emit(playing ? 'play' : 'pause');
+            }
+        };
         /**
          * Frame cleanup
          * @event VlcPlayer#frameCleanup
@@ -141,12 +149,18 @@ class VlcPlayer extends EventEmitter {
          * State changed to playing
          * @event VlcPlayer#play
          */
-        player.onPlaying = () => this.emit('play');
+        player.onPlaying = () => {
+            this.emit('play');
+            playing = true;
+        };
         /**
          * State changed to paused
          * @event VlcPlayer#pause
          */
-        player.onPaused = () => this.emit('pause');
+        player.onPaused = () => {
+            this.emit('pause');
+            playing = false;
+        };
         /**
          * VLC is fastforwarding through the media (works only when an input supports forward playback).
          * @event VlcPlayer#forward
@@ -177,6 +191,7 @@ class VlcPlayer extends EventEmitter {
         player.onStopped = () => {
             this.clearCanvas();
             this.emit('stop');
+            playing = false;
         }
         /**
          * Time changed
@@ -231,6 +246,7 @@ class VlcPlayer extends EventEmitter {
         this.on('buffering', stateChangeEvent('buffering'))
         this.on('ended', stateChangeEvent('ended'))
         this.on('error', stateChangeEvent('error'))
+        this.on('stateChange', state => currentState = state);
 
         /**
          * Time or position changed
